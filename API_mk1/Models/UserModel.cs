@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using API_mk1.Models.Project;
 
 namespace API_mk1.Models.User
 {
@@ -17,13 +18,21 @@ namespace API_mk1.Models.User
         
         [Required]
         [MaxLength(250)]
+        [ForeignKey("OwnerId")]
         public string UserId { get; set; }
         
         [Required]
-        [MaxLength(250)]
+        [MaxLength(50)]
         public string UserName { get; set; }
+
+        //[Required]
+        //[MaxLength(250)]
+        //public string PasswordHash { get; set; }
         
         [Required]
         public bool IsContractor { get; set; }
+
+        //nav prop
+        public List<ProjectModel> ProjectModel { get; set; }
     }
 }

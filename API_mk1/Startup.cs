@@ -29,7 +29,7 @@ namespace API_mk1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PitcherContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("PitcherConnnection")));
-            services.AddScoped<IPitcherContext, PitcherContext>();
+            services.AddScoped<PitcherContext>();
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();

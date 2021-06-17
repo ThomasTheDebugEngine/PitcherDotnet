@@ -11,16 +11,16 @@ namespace API_mk1.Services
 {
     public class UserService: IUserService
     {
-        private readonly IPitcherContext _context;
+        private readonly PitcherContext _context;
 
-        public UserService(IPitcherContext context)
+        public UserService(PitcherContext context)
         {
             _context = context;
         }
 
-        public Task<UserModel> GetUserByIdAsync(string id) // TODO 404 here, need to make it find things
+        public Task<UserModel> GetUserByIdAsync(string id) // TODO handle 404 (on upper levels)
         {
-            return Task.Run(() => _context.Users.FirstOrDefault(p => p.UserId == id)); //TODO make sure it can find
+            return Task.Run(() => (_context.Users.FirstOrDefault(p => p.UserId == id)));
         }
 
         public Task<IEnumerable<UserModel>> GetAllUsersAsync()
@@ -37,15 +37,13 @@ namespace API_mk1.Services
         {
             if(userModel != null)
             {
-
                 string userId = await Task.Run(() => StringHash.GetSHA2(userModel.UserName));
 
                 if(await GetUserByIdAsync(userId) == null)
                 {
-                    //TODO ID doesn't exist, can create
                     userModel.UserId = userId;
                     _context.Users.Add(userModel);
-                    //await SaveChangesAsync(); //TODO uncomment to actualy save to DB
+                    //await SaveChangesAsync(); //WARN uncomment to actualy save to DB
                     return true;
                 }
                 else
@@ -59,6 +57,8 @@ namespace API_mk1.Services
                 throw new ArgumentNullException(nameof(userModel));
             }
         }
+
+        //----------------------------------------------------------------------------------------
     }
 
     public interface IUserService
