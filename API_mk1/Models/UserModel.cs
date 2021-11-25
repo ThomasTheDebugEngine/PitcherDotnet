@@ -9,16 +9,15 @@ using API_mk1.Models.Project;
 
 namespace API_mk1.Models.User
 {
-    [Table("Users")]
+    [Table("Users_Table")]
     [Index(nameof(UserId), IsUnique = true)]
     public class UserModel
     {
         [Key]
-        public long DbId { get; set; }
-        
+        public long DbId { get; set; } //might not need this
+
         [Required]
         [MaxLength(250)]
-        [ForeignKey("OwnerId")]
         public string UserId { get; set; }
         
         [Required]
@@ -33,6 +32,6 @@ namespace API_mk1.Models.User
         public bool IsContractor { get; set; }
 
         //nav prop
-        public List<ProjectModel> ProjectModel { get; set; }
+        public List<ProjectModel> Projects { get; set; } //figure out if I have to have the entire object in the list
     }
 }

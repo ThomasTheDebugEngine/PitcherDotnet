@@ -3,14 +3,16 @@ using API_mk1.Context.PitcherContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API_mk1.Migrations
 {
     [DbContext(typeof(PitcherContext))]
-    partial class PitcherContextModelSnapshot : ModelSnapshot
+    [Migration("20211123140642_benderMk1")]
+    partial class benderMk1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,11 +35,6 @@ namespace API_mk1.Migrations
                     b.Property<long>("CreatedAtUnix")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
                     b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -52,6 +49,9 @@ namespace API_mk1.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("likeNumber")
                         .ValueGeneratedOnAdd()

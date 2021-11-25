@@ -1,5 +1,7 @@
 using API_mk1.Context.PitcherContext;
-using API_mk1.Services;
+using API_mk1.Security;
+using API_mk1.Services.ProjectService;
+using API_mk1.Services.UserService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +33,8 @@ namespace API_mk1
             services.AddDbContext<PitcherContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("PitcherConnnection")));
             services.AddScoped<PitcherContext>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ISecurityUtils, SecurityUtils>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
         }
