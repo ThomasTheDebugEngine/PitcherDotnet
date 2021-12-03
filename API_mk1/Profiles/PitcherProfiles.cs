@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API_mk1.Dtos;
-using API_mk1.Dtos.ProjectDtos;
-using API_mk1.Dtos.User;
-using API_mk1.Models.Project;
-using API_mk1.Models.User;
+using API_mk1.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace API_mk1.Profiles
 {
@@ -20,6 +18,9 @@ namespace API_mk1.Profiles
 
             CreateMap<ProjectModel, ProjectGetDto>();
             CreateMap<ProjectPostDto, ProjectModel>();
+
+            CreateMap<IdentityUser, AuthOutgoingDto>();
+            
         }
     }
 }

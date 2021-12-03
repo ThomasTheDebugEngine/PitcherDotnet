@@ -4,14 +4,16 @@ using API_mk1.Context.PitcherContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API_mk1.Migrations
 {
     [DbContext(typeof(PitcherContext))]
-    partial class PitcherContextModelSnapshot : ModelSnapshot
+    [Migration("20211202164715_identMk2")]
+    partial class identMk2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

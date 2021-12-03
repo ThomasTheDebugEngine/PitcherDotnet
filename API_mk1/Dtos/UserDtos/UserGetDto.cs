@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API_mk1.Dtos.User
+namespace API_mk1.Dtos
 {
     public class UserGetDto
     {

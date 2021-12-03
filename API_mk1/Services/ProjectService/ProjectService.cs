@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using API_mk1.Context.PitcherContext;
 using API_mk1.Security;
-using API_mk1.Models.Project;
-using API_mk1.Models.User;
+using API_mk1.Models;
 using API_mk1.Services.UserService;
-using System.Reflection;
 
 namespace API_mk1.Services.ProjectService
 {
@@ -73,7 +71,7 @@ namespace API_mk1.Services.ProjectService
                 projectModel.CreatedAtUnix = await _secUtils.getUnixSecondsAsync();
 
                 await _context.Projects.AddAsync(projectModel);
-                //await SaveChangesAsync(); //WARN uncomment to actualy save to DB
+                await _context.SaveChangesAsync(); //WARN uncomment to actualy save to DB
             }
         }
 

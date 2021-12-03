@@ -4,18 +4,21 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API_mk1.Dtos
+namespace API_mk1.Models
 {
-    public class UserPostDto
+    public class UserSignupModel
     {
         [Required]
-        [MaxLength(250)]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
         public string UserName { get; set; }
-        
+
         [Required]
         public string Password { get; set; }
 
-        [Required]
-        public bool IsContractor { get; set; }
+        [Compare("Password", ErrorMessage="passwords don't match")]
+        public string ConfirmPassword { get; set; }
     }
 }

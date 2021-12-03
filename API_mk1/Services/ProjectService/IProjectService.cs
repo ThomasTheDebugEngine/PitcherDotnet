@@ -2,8 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using API_mk1.Context.PitcherContext;
-using API_mk1.Models.Project;
-using API_mk1.Models.User;
+using API_mk1.Models;
 
 namespace API_mk1.Services.ProjectService
 {

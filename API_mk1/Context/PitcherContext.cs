@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using API_mk1.Models.User;
-using API_mk1.Models.Project;
+using API_mk1.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace API_mk1.Context.PitcherContext
 {
-    public class PitcherContext: DbContext, IPitcherContext
+    public class PitcherContext: IdentityDbContext, IPitcherContext
     {
         public PitcherContext(DbContextOptions<PitcherContext> opt) : base(opt)
         {
 
         }
-        public DbSet<UserModel> Users { get; set; }
+        public DbSet<UserModel> PitcherUsers { get; set; }
         public DbSet<ProjectModel> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +27,8 @@ namespace API_mk1.Context.PitcherContext
             modelBuilder.Entity<ProjectModel>()
                 .Property(p => p.likeNumber)
                 .HasDefaultValue(0);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

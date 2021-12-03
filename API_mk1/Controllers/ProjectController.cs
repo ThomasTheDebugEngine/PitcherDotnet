@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API_mk1.Dtos.ProjectDtos;
-using API_mk1.Models.Project;
-using API_mk1.Models.User;
+using API_mk1.Dtos;
+using API_mk1.Models;
 using API_mk1.Services.ProjectService;
 using API_mk1.Services.UserService;
 using AutoMapper;

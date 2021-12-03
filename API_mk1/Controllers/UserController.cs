@@ -5,14 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API_mk1.Models.User;
+using API_mk1.Models;
 using API_mk1.Services;
 using AutoMapper;
 using API_mk1.Services.UserService;
 using API_mk1.Services.ProjectService;
-using API_mk1.Models.Project;
-using API_mk1.Dtos.User;
-using API_mk1.Dtos.ProjectDtos;
+using API_mk1.Dtos;
 
 namespace API_mk1.Controllers
 {
@@ -82,26 +80,8 @@ namespace API_mk1.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 
-        // POST: api/signup
-        [HttpPost("signup")]
-        public async Task<ActionResult<UserGetDto>> CreateUser(UserPostDto createDto)
-        {
-            //TODO check input validity (EXP)
 
-            UserModel userModel = _mapper.Map<UserModel>(createDto);
-            bool UserIsDuplicate = await _userService.CreateUserAsync(userModel);
-
-            if(UserIsDuplicate)
-            {
-                return Ok("user already taken"); //prob need to change this from Ok()
-            }
-            else
-            {
-                UserGetDto UserReadDto = _mapper.Map<UserGetDto>(userModel);
-                return CreatedAtAction("GetUserById", new { UserID = UserReadDto.UserId }, UserReadDto);
-            }
-        }
-
+        //-------------------------------------------UPFATE THESE ROUTES TO IDENTITY LATER-------------------------------------
         // DELETE: api/users/{id:string}
         [HttpDelete("users/{UserID}", Name="DeleteUserById")]
         public async Task<ActionResult<UserGetDto>> DeleteUserById(string UserID)

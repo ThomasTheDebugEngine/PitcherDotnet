@@ -10,6 +10,7 @@ namespace API_mk1.Security
     {
         Task<string> getGuidAsync();
         Task<long> getUnixSecondsAsync();
-        public object AssignDifferential(object subset, object superset);
+        object AssignDifferential(object subset, object superset);
+        string GetSHA256(string inputData);
     }
 }

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using API_mk1.Models.User;
+using API_mk1.Models;
 
-namespace API_mk1.Models.Project
+namespace API_mk1.Models
 {
     [Table("Projects_Table")]
     public class ProjectModel

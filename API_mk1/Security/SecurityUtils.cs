@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 using System.Reflection;
-using API_mk1.Models.Project;
 
 namespace API_mk1.Security
 {
@@ -37,6 +36,20 @@ namespace API_mk1.Security
             }
 
             return superset;
+        }
+
+        public string GetSHA256(string inputData)
+        {
+            using SHA256 sha256Hash = SHA256.Create();
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(inputData));
+            StringBuilder builder = new();
+
+            for(int i = 0; i < bytes.Length; i++)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+
+            return builder.ToString();
         }
     }
 }

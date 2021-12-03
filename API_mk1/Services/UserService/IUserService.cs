@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API_mk1.Models.User;
+using API_mk1.Models;
 
 namespace API_mk1.Services.UserService
 {
