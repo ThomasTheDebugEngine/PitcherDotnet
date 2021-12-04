@@ -7,12 +7,16 @@ using API_mk1.Models;
 using API_mk1.Services.ProjectService;
 using API_mk1.Services.UserService;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_mk1.Controllers
 {
     [Route("api")]
     [ApiController]
+    [Authorize]
+    [EnableCors("AllowAnyOrigin")]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;

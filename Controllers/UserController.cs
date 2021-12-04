@@ -11,11 +11,15 @@ using AutoMapper;
 using API_mk1.Services.UserService;
 using API_mk1.Services.ProjectService;
 using API_mk1.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace API_mk1.Controllers
 {
     [Route("api")]
     [ApiController]
+    [Authorize]
+    [EnableCors("AllowAnyOrigin")]
     public class UserController : ControllerBase
     {
         //private readonly IPitcherContext _context;

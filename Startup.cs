@@ -62,6 +62,12 @@ namespace API_mk1
             services.AddScoped<ISecurityUtils, SecurityUtils>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
+
+            services.AddCors(options => {
+                options.AddPolicy("AllowAnyOrigin", builder => {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +81,8 @@ namespace API_mk1
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 

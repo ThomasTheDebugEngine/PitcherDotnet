@@ -7,6 +7,8 @@ using API_mk1.Dtos;
 using API_mk1.Models;
 using API_mk1.Services.AuthService;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -15,6 +17,8 @@ namespace API_mk1.Controllers
 {
     [Route("api")]
     [ApiController]
+    [AllowAnonymous]
+    [EnableCors("AllowAnyOrigin")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
