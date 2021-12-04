@@ -11,11 +11,12 @@
 *.sln.docstates
 
 # migrations
-Migrations/
+**/Migrations/
+Migrations
 
 # conf and env files
 appsettings.Development.json
-appsettings.json
+**/appsettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
