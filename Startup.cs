@@ -53,6 +53,15 @@ namespace API_mk1
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwt:secret"]))
                     };
                 });
+            
+            services.AddCors(options => {
+                options.AddPolicy("AllowAnyOrigin", builder => {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
 
             services.AddDbContext<PitcherContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("PitcherConnnection")));
             services.AddScoped<PitcherContext>();
@@ -62,12 +71,6 @@ namespace API_mk1
             services.AddScoped<ISecurityUtils, SecurityUtils>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
-
-            services.AddCors(options => {
-                options.AddPolicy("AllowAnyOrigin", builder => {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,7 +85,7 @@ namespace API_mk1
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors("AllowAnyOrigin");
 
             app.UseAuthentication();
 

@@ -4,29 +4,38 @@ using System.Linq;
 using System.Threading.Tasks;
 using API_mk1.Dtos;
 using API_mk1.Models;
+using API_mk1.Services.AuthService;
 using API_mk1.Services.ProjectService;
 using API_mk1.Services.UserService;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_mk1.Controllers
 {
     [Route("api")]
     [ApiController]
+    //[EnableCors("AllowAnyOrigin")]
+    [AllowAnonymous]
     [Authorize]
-    [EnableCors("AllowAnyOrigin")]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
         private readonly IUserService _userService;
+        private readonly IAuthService authService;
         private readonly IMapper _mapper;
 
-        public ProjectController(IMapper mapper, IProjectService projectService, IUserService userService)
+        public ProjectController(
+            IMapper mapper,
+            IProjectService projectService,
+            IUserService userService,
+            IAuthService authService)
         {
             _projectService = projectService;
             _userService = userService;
+            this.authService = authService;
             _mapper = mapper;
         }
 
@@ -35,15 +44,18 @@ namespace API_mk1.Controllers
         [HttpGet("users/{UserID}/projects", Name="GetUserAllProjects")]
         public async Task<ActionResult<List<ProjectGetDto>>> GetUserAllProjects(string UserID)
         {
-            UserModel userModel = await _userService.GetUserByIdAsync(UserID);
-
-            if(userModel != null)
+            IdentityUser identUser = await authService.GetIdentUserById(UserID);
+            //HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            if(identUser != null)
             {
-                IList<ProjectModel> projectModel = await _projectService.GetAllUserProjectsByUserId(userModel.UserId);
+                IList<ProjectModel> projectModel = await _projectService.GetAllUserProjectsByUserId(identUser.Id);
+
+                Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 return Ok(_mapper.Map<IList<ProjectGetDto>>(projectModel));
             }
             else
             {
+                //Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 return NotFound();
             }
         }
@@ -71,18 +83,19 @@ namespace API_mk1.Controllers
         [HttpPost("projects")]
         public async Task<ActionResult<ProjectGetDto>> CreateProject(ProjectPostDto projectPostDto)
         {
-            if(projectPostDto != null)
+            if(ModelState.IsValid)
             {
                 ProjectModel projectModel = _mapper.Map<ProjectModel>(projectPostDto);
                 await _projectService.AddProject(projectModel);
 
                 ProjectGetDto projectGetDto = _mapper.Map<ProjectGetDto>(projectModel);
                 return CreatedAtAction("GetSingleProjectById", new { ProjectID = projectGetDto.ProjectId }, projectGetDto);
+
             }
-            else
-            {
-                return Ok("post request was null"); //change from Ok() later
-            }
+
+            IEnumerable<string> errorList = ModelState.SelectMany(m => m.Value.Errors.Select(e => e.ErrorMessage));
+
+            return Ok(errorList);
         }
 
         // DELETE: api/projects/{id:string}

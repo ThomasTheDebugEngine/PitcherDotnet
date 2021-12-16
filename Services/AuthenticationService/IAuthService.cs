@@ -20,5 +20,7 @@ namespace API_mk1.Services.AuthService
         Task<SignInResult> Login(string password, string email);
 
         Task<IdentityUser> GetIdentUserByEmail(string email);
+
+        Task<IdentityUser> GetIdentUserById(string userID);
     }
 }

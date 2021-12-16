@@ -20,7 +20,7 @@ namespace API_mk1.Services.UserService
             _secUtils = secUtils;
         }
 
-        public Task<UserModel> GetUserByIdAsync(string id) // TODO handle 404 (on upper levels)
+        public Task<UserModel> GetUserByIdAsync(string id) // ALL THIS IS DEPRECATED, REFACTOR FOR USAGE FROM AUTH
         {
             return Task.Run(() => _context.PitcherUsers.FirstOrDefault(p => p.UserId == id));
         }

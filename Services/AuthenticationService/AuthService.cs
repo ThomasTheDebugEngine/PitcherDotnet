@@ -91,5 +91,10 @@ namespace API_mk1.Services.AuthService
         {
             return await userManager.FindByEmailAsync(email);
         }
+
+        public async Task<IdentityUser> GetIdentUserById(string userID)
+        {
+            return await userManager.FindByIdAsync(userID);
+        }
     }
 }

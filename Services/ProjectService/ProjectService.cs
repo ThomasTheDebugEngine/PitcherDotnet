@@ -26,17 +26,7 @@ namespace API_mk1.Services.ProjectService
 
         public async Task<IList<ProjectModel>> GetAllUserProjectsByUserId(string UserID)
         {
-            UserModel usermodel = await _userService.GetUserByIdAsync(UserID);
-
-            if(usermodel == default(UserModel))
-            {
-                Console.WriteLine("user was not found"); //TODO need to make it an HTTP return
-                return null;
-            }
-            else
-            {
-                return _context.Projects.Where(p => p.OwnerId == usermodel.UserId).ToList();
-            }
+            return await Task.Run(() => _context.Projects.Where(p => p.OwnerId == UserID).ToList());
         }
 
         public Task<ProjectModel> GetSingleProjectByProjectId(string projectID)
@@ -48,7 +38,7 @@ namespace API_mk1.Services.ProjectService
         {
             IList<ProjectModel> topNResults = await Task.Run(() => _context.Projects
                 .Where(p => p.likeNumber >= 0)
-                .Take(2)
+                //.Take(2)
                 .ToList());
 
             return topNResults;
@@ -58,21 +48,12 @@ namespace API_mk1.Services.ProjectService
 
         public async Task AddProject(ProjectModel projectModel) //TODO make a route for this and test
         {
-            //TODO need a sensible solution for this later
-            string[] UserArgs = { projectModel.Title, projectModel.Description, projectModel.Body, projectModel.OwnerId };
-            
-            if(UserArgs.All(arg => arg.Length < 0))
-            {
-                Console.WriteLine("cannot enter empty parameters"); //TODO need to make it an HTTP return
-            }
-            else
-            {
-                projectModel.ProjectId = await _secUtils.getGuidAsync();
-                projectModel.CreatedAtUnix = await _secUtils.getUnixSecondsAsync();
+            projectModel.ProjectId = await _secUtils.getGuidAsync();
+            projectModel.CreatedAtUnix = await _secUtils.getUnixSecondsAsync();
 
-                await _context.Projects.AddAsync(projectModel);
-                await _context.SaveChangesAsync(); //WARN uncomment to actualy save to DB
-            }
+
+            await _context.Projects.AddAsync(projectModel);
+            await _context.SaveChangesAsync(); //WARN uncomment to actualy save to DB
         }
 
         public async Task<ProjectModel> DeleteProjectById(string ProjectID)
@@ -82,7 +63,7 @@ namespace API_mk1.Services.ProjectService
             if(projectModel != null)
             {
                 _context.Projects.Remove(projectModel);
-                //await _context.SaveChangesAsync(); //WARN uncomment to actually save
+                await _context.SaveChangesAsync(); //WARN uncomment to actually save
                 return projectModel;
             }
             else
@@ -101,7 +82,7 @@ namespace API_mk1.Services.ProjectService
                 ProjectModel DxProjectModel = (ProjectModel) _secUtils.AssignDifferential(newProjectModel, DbProjectModel);
                 
                 _context.Update(DxProjectModel);
-                //await _context.SaveChangesAsync(); //WARN uncomment to actually save
+                await _context.SaveChangesAsync(); //WARN uncomment to actually save
                 return DxProjectModel;
             }
             else

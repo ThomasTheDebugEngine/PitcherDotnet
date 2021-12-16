@@ -18,7 +18,7 @@ namespace API_mk1.Controllers
     [Route("api")]
     [ApiController]
     [AllowAnonymous]
-    [EnableCors("AllowAnyOrigin")]
+    //[EnableCors("AllowAnyOrigin")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -35,8 +35,8 @@ namespace API_mk1.Controllers
             _mapper = mapper;
         }
 
-        // POST: api/signup
-        [HttpPost("signup")]
+        // POST: api/login
+        [HttpPost("login")]
         public async Task<IActionResult> UserLogin(UserSignInModel userSignInModel)
         {    
             if(ModelState.IsValid)
@@ -108,10 +108,10 @@ namespace API_mk1.Controllers
             if(User != null && User.Identity.IsAuthenticated)
             {
                 await _authService.LogoutAsync();
-                return Ok("logged out");
+                return Ok(true);
             }
 
-            return BadRequest("user already logged out");
+            return Ok(true); //for fonrtend stuff, need to change later
         }
     }
 }

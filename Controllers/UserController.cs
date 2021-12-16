@@ -18,11 +18,11 @@ namespace API_mk1.Controllers
 {
     [Route("api")]
     [ApiController]
+    //[EnableCors("AllowAnyOrigin")]
+    [AllowAnonymous]
     [Authorize]
-    [EnableCors("AllowAnyOrigin")]
     public class UserController : ControllerBase
     {
-        //private readonly IPitcherContext _context;
         private readonly IUserService _userService;
         private readonly IProjectService _projectService;
         private readonly IMapper _mapper;
@@ -42,6 +42,8 @@ namespace API_mk1.Controllers
         public async Task<ActionResult<IEnumerable<UserGetDto>>> GetAllUsers()
         {
             var AllUsers = await _userService.GetAllUsersAsync();
+            
+            Response.Headers.Append("Access-Control-Allow-Origin", "*");
             return Ok(_mapper.Map<IEnumerable<UserGetDto>>(AllUsers));
         }
 
@@ -64,13 +66,14 @@ namespace API_mk1.Controllers
         }
 
         // GET: api/browse
-        [HttpGet("browse", Name= "GetPopularProjects")]
-        public async Task<ActionResult<List<ProjectGetDto>>> GetPopularProjects()
+        [HttpGet("browse", Name="GetPopularProjects")] //TODO move to project controller
+        public async Task<ActionResult<IList<ProjectGetDto>>> GetPopularProjects()
         {
             IList<ProjectModel> popularProjects = await _projectService.GetPopularProjects();
 
             if(popularProjects != null)
             {
+                Response.Headers.Append("Access-Control-Allow-Origin", "*");
                 return Ok(_mapper.Map<IList<ProjectGetDto>>(popularProjects));
             }
             else
