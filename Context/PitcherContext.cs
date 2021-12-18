@@ -15,6 +15,8 @@ namespace API_mk1.Context.PitcherContext
         }
         public DbSet<UserModel> PitcherUsers { get; set; }
         public DbSet<ProjectModel> Projects { get; set; }
+        public DbSet<LikeModel> LikeModel { get; set; }
+        public DbSet<StarModel> StarModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

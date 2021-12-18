@@ -24,7 +24,7 @@ namespace API_mk1.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IUserService _userService;
-        private readonly IAuthService authService;
+        private readonly IAuthService _authService;
         private readonly IMapper _mapper;
 
         public ProjectController(
@@ -35,7 +35,7 @@ namespace API_mk1.Controllers
         {
             _projectService = projectService;
             _userService = userService;
-            this.authService = authService;
+            _authService = authService;
             _mapper = mapper;
         }
 
@@ -44,7 +44,7 @@ namespace API_mk1.Controllers
         [HttpGet("users/{UserID}/projects", Name="GetUserAllProjects")]
         public async Task<ActionResult<List<ProjectGetDto>>> GetUserAllProjects(string UserID)
         {
-            IdentityUser identUser = await authService.GetIdentUserById(UserID);
+            IdentityUser identUser = await _authService.GetIdentUserById(UserID);
             //HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
             if(identUser != null)
             {
@@ -75,6 +75,53 @@ namespace API_mk1.Controllers
             {
                 return NotFound();
             }
+        }
+
+        //GET: api/projects/{projectId:string}/like/{userId:string}
+        [HttpGet("projects/{ProjectID}/like/{UserID}", Name="LikeOrUnlikeProject")]
+        public async Task<ActionResult<ProjectGetDto>> LikeOrUnlikeProject(string UserID, string ProjectID)
+        {
+            IdentityUser identUser = await _authService.GetIdentUserById(UserID);
+
+            if(identUser != null)
+            {
+                ProjectModel projectModel = await _projectService.ToggleProjectLikeByUserId(ProjectID, UserID);
+
+                Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                return Ok(_mapper.Map<ProjectGetDto>(projectModel));
+            }
+            return NotFound();
+        }
+
+        //GET: api/projects/{projectId:string}/star/{userId:string}
+        [HttpGet("projects/{ProjectID}/star/{UserID}", Name="StarOrUnstarProject")]
+        public async Task<ActionResult<bool>> StarOrUnstarProject(string UserID, string ProjectID)
+        {
+            IdentityUser identUser = await _authService.GetIdentUserById(UserID);
+
+            if(identUser != null)
+            {
+                await _projectService.ToggleProjectStarredByUserId(ProjectID, UserID);
+
+                Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                //TODO return new all starred projects
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        //GET: api/projects/{userID}/starred
+        [HttpGet("projects/{UserID}/starred", Name="GetAllStarredProjectsByUserId")]
+        public async Task<ActionResult<IList<ProjectGetDto>>> GetAllStarredProjectsByUserId(string UserID)
+        {
+            IdentityUser identUser = await _authService.GetIdentUserById(UserID);
+
+            if(identUser != null)
+            {
+                IList<ProjectModel> starredProjects = await _projectService.GetAllStarredProjectsByUserId(UserID);
+                return Ok(_mapper.Map<IList<ProjectGetDto>>(starredProjects));
+            }
+            return null;
         }
 
         #endregion

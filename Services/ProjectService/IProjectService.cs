@@ -9,6 +9,7 @@ namespace API_mk1.Services.ProjectService
     public interface IProjectService
     {
         Task AddProject(ProjectModel projectModel);
+
         Task<IList<ProjectModel>> GetAllUserProjectsByUserId(string UserID);
 
         Task<ProjectModel> GetSingleProjectByProjectId(string projectID);
@@ -18,5 +19,11 @@ namespace API_mk1.Services.ProjectService
         Task<ProjectModel> DeleteProjectById(string ProjectID);
         
         Task<ProjectModel> UpdateProjectByProjectIdAsync(string projectID, object newProjectModel);
+
+        Task<ProjectModel> ToggleProjectLikeByUserId(string projectID, string userID);
+
+        Task<bool> ToggleProjectStarredByUserId(string projectID, string userID);
+
+        Task<IList<ProjectModel>> GetAllStarredProjectsByUserId(string userId);
     }
 }

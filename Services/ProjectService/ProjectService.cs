@@ -36,11 +36,7 @@ namespace API_mk1.Services.ProjectService
 
         public async Task<IList<ProjectModel>> GetPopularProjects() //TODO tie into likes later
         {
-            IList<ProjectModel> topNResults = await Task.Run(() => _context.Projects
-                .Where(p => p.likeNumber >= 0)
-                //.Take(2)
-                .ToList());
-
+            IList<ProjectModel> topNResults = await Task.Run(() => _context.Projects.Where(p => p.likeNumber >= 0).ToList());
             return topNResults;
         }
 
@@ -89,6 +85,79 @@ namespace API_mk1.Services.ProjectService
             {
                 return null;
             }
+        }
+
+        public async Task<ProjectModel> ToggleProjectLikeByUserId(string projectID, string userID)
+        {
+            ProjectModel DbProjectModel = await GetSingleProjectByProjectId(projectID);
+
+            if(DbProjectModel != null)
+            {
+                LikeModel likeProject = _context.LikeModel.FirstOrDefault(p => p.ProjectId == projectID && p.LikedBy == userID);
+
+                if(likeProject != null)
+                {
+                    await Task.Run(() => _context.LikeModel.Remove(likeProject));
+
+                    DbProjectModel.likeNumber -= 1;
+                    return await UpdateProjectByProjectIdAsync(projectID, DbProjectModel);
+                }
+                else
+                {
+                    var record = new LikeModel
+                    {
+                        LikedBy = userID,
+                        ProjectId = projectID
+                    };
+
+                    await _context.LikeModel.AddAsync(record);
+
+                    DbProjectModel.likeNumber += 1;
+                    return await UpdateProjectByProjectIdAsync(projectID, DbProjectModel);
+                }
+            }
+            return null;
+        }
+
+        public async Task<bool> ToggleProjectStarredByUserId(string projectID, string userID)
+        {
+            ProjectModel DbProjectModel = await GetSingleProjectByProjectId(projectID);
+
+            if(DbProjectModel != null)
+            {
+                StarModel starProject = _context.StarModel.FirstOrDefault(p => p.ProjectId == projectID && p.StarredBy == userID);
+
+                if(starProject != null)
+                {
+                    await Task.Run(() => _context.Remove(starProject));
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    var record = new StarModel
+                    {
+                        ProjectId = projectID,
+                        StarredBy = userID
+                    };
+
+                    await _context.AddAsync(record);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public async Task<IList<ProjectModel>> GetAllStarredProjectsByUserId(string userID)
+        {
+            IQueryable<string> projectList = await Task.Run(() => _context.StarModel.Where(p => p.StarredBy == userID).Select(p => p.ProjectId));
+
+            if(projectList.Any())
+            {
+                return await Task.Run(() => _context.Projects.Join(projectList, proj => proj.ProjectId, id => id, (proj, id) => proj).ToList());
+            }
+            return null;
         }
     }
 }
