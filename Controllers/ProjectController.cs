@@ -105,7 +105,7 @@ namespace API_mk1.Controllers
 
                 Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 //TODO return new all starred projects
-                return Ok();
+                return RedirectToAction("GetAllStarredProjectsByUserId", new { UserID });
             }
             return NotFound();
         }
