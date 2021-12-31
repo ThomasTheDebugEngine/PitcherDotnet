@@ -63,7 +63,11 @@ namespace API_mk1
                 });
             });
 
+<<<<<<< Updated upstream
             services.AddDbContext<PitcherContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:PitcherConnnection"]));
+=======
+            services.AddDbContext<PitcherContext>(opt => opt.UseSqlServer("Data Source=localhost;Initial Catalog=dev_pitcher_mk1;Integrated Security=True"));
+>>>>>>> Stashed changes
             services.AddScoped<PitcherContext>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProjectService, ProjectService>();
