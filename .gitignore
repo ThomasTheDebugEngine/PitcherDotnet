@@ -11,7 +11,7 @@
 *.sln.docstates
 
 # migrations
-Migrations
+# Migrations
 
 # conf and env files
 appsettings.Development.json
