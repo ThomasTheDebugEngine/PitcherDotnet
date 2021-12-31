@@ -63,7 +63,7 @@ namespace API_mk1
                 });
             });
 
-            services.AddDbContext<PitcherContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("PitcherConnnection")));
+            services.AddDbContext<PitcherContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:PitcherConnnection"]));
             services.AddScoped<PitcherContext>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProjectService, ProjectService>();
