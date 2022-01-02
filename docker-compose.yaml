@@ -1,9 +1,0 @@
-version: "3.3"
-services:
-  dev:
-    image: spectrogram/pitcherback2
-    ports:
-      - 8080:80
-    volumes:
-      - ./:/app/deve
-    command: touch /app/deve/test
